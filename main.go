@@ -1,7 +1,7 @@
 package main
 
-import "fmt"
+import "library_management_system/input"
 
 func main() {
-	fmt.Printf("Hello World! \n")
+	input.ProgramInput()
 }
