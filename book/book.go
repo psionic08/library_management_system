@@ -1,5 +1,7 @@
 package book
 
+import "fmt"
+
 type Book struct {
 	Shelf    int32
 	Title    string
@@ -10,7 +12,13 @@ type Book struct {
 
 var books []Book
 
-func AddBook(shelf int32, title string, author string, id string, renterId string) {
+func AddBook(shelf int32, title string, author string, id string, renterId string) error {
+	existingBook := getBookById(books, id)
+
+	if existingBook != nil {
+		return fmt.Errorf("book with id: %s already exists", id)
+	}
+
 	newBook := &Book{
 		Shelf:    shelf,
 		Title:    title,
@@ -20,8 +28,11 @@ func AddBook(shelf int32, title string, author string, id string, renterId strin
 	}
 
 	books = append(books, *newBook)
+	return nil
 }
 
 func GetBooks() []Book {
-	return books
+	output := make([]Book, len(books))
+	copy(output, books)
+	return output
 }
