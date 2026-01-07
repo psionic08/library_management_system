@@ -11,7 +11,7 @@ func readInt32(scanner *bufio.Scanner) int32 {
 	for {
 		scanner.Scan()
 		intStr := scanner.Text()
-		value, err := strconv.ParseInt(intStr, 10, 4)
+		value, err := strconv.ParseInt(intStr, 10, 32)
 		if err != nil {
 			fmt.Println("Not a 32 bit number please enter a valid input.")
 			continue

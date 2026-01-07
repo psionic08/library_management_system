@@ -17,10 +17,8 @@ func addBook(scanner *bufio.Scanner) {
 	author := readLine(scanner)
 	fmt.Print("Please enter the book id: ")
 	id := readLine(scanner)
-	fmt.Print("Please enter the id of renter: ")
-	renterId := readLine(scanner)
 
-	err := book.AddBook(shelf, title, author, id, renterId)
+	err := book.AddBook(shelf, title, author, id)
 	if err != nil {
 		fmt.Println(err)
 		return
@@ -35,6 +33,61 @@ func listBooks() {
 	for i, bookItem := range books {
 		fmt.Println(i+1, bookItem.Shelf, bookItem.Title, bookItem.Author, bookItem.Id, bookItem.RenterId)
 	}
+}
+
+func locateBook(scanner *bufio.Scanner) {
+	fmt.Printf("Please enter the book id to find: ")
+	id := readLine(scanner)
+
+	bookPointer, err := book.LocateBook(id)
+
+	if err != nil {
+		fmt.Println(err)
+		return
+	}
+	fmt.Printf("Book with id: %s is located in shelf: %d \n", bookPointer.Id, bookPointer.Shelf)
+}
+
+func rentBook(scanner *bufio.Scanner) {
+	fmt.Printf("Please enter the book id to be rented: ")
+	bookId := readLine(scanner)
+	fmt.Printf("Please enter the user id to rent the book to: ")
+	userId := readLine(scanner)
+
+	err := book.RentBook(bookId, userId)
+
+	if err != nil {
+		fmt.Println(err)
+		return
+	}
+	fmt.Printf("Book: %s has been rented to user: %s \n", bookId, userId)
+}
+
+func returnBook(scanner *bufio.Scanner) {
+	fmt.Printf("Please enter the book id to be renturned: ")
+	bookId := readLine(scanner)
+	fmt.Printf("Please enter the user id who is returning the book: ")
+	userId := readLine(scanner)
+
+	err := book.ReturnBook(bookId, userId)
+	if err != nil {
+		fmt.Println(err)
+		return
+	}
+	fmt.Printf("Book: %s has been returned by user: %s \n", bookId, userId)
+}
+
+func removeBook(scanner *bufio.Scanner) {
+	fmt.Printf("Please enter the book id to be removed: ")
+	id := readLine(scanner)
+
+	err := book.RemoveBook(id)
+
+	if err != nil {
+		fmt.Println(err)
+		return
+	}
+	fmt.Println("The book has been removed")
 }
 
 func addUser(scanner *bufio.Scanner) {
@@ -61,6 +114,19 @@ func listUsers() {
 	}
 }
 
+func removeUser(scanner *bufio.Scanner) {
+	fmt.Printf("Please enter the book id to be removed:")
+	id := readLine(scanner)
+
+	err := user.RemoveUser(id)
+
+	if err != nil {
+		fmt.Println(err)
+		return
+	}
+	fmt.Println("The user has been removed")
+}
+
 func ProgramInput() {
 	scanner := bufio.NewScanner(os.Stdin)
 
@@ -68,9 +134,14 @@ func ProgramInput() {
 		fmt.Println("What would you like to do?")
 		fmt.Println("1. Exit")
 		fmt.Println("2. Add book")
-		fmt.Println("3. List books")
-		fmt.Println("4. Add user")
-		fmt.Println("5. List users")
+		fmt.Println("3. Remove book")
+		fmt.Println("4. List books")
+		fmt.Println("5. Locate Book")
+		fmt.Println("6, Rent book")
+		fmt.Println("7. Return book")
+		fmt.Println("8. Add user")
+		fmt.Println("9. Remove user")
+		fmt.Println("10. List users")
 		fmt.Print("Please enter your input: ")
 
 		var input = readInt32(scanner)
@@ -81,10 +152,20 @@ func ProgramInput() {
 		case 2:
 			addBook(scanner)
 		case 3:
-			listBooks()
+			removeBook(scanner)
 		case 4:
-			addUser(scanner)
+			listBooks()
 		case 5:
+			locateBook(scanner)
+		case 6:
+			rentBook(scanner)
+		case 7:
+			returnBook(scanner)
+		case 8:
+			addUser(scanner)
+		case 9:
+			removeUser(scanner)
+		case 10:
 			listUsers()
 		default:
 			fmt.Println("Invalid choice")
